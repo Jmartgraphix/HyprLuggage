@@ -1,0 +1,48 @@
+#!/bin/bash
+
+gen_mako() {
+    cat > "$dest/.config/mako/config" <<EOF
+# Mako Notification Daemon Configuration
+# Theme: Omarchy $name
+
+# Position
+default-timeout=10000
+ignore-timeout=1
+layer=overlay
+anchor=top-right
+margin=7
+
+# Appearance
+width=350
+height=100
+padding=15
+border-size=2
+border-radius=10
+
+# Behavior
+font=JetBrains Mono Nerd Font 10
+max-visible=5
+group-by=app-name
+sort=-time
+
+# Actions
+actions=1
+history=1
+
+# Theme colors (Omarchy $name)
+background-color=${black}cc
+text-color=$fg
+border-color=$accent
+
+# Per-mode settings
+[mode=do-not-disturb]
+invisible=1
+on-notify=none
+
+[mode=silent]
+on-notify=none
+
+[urgency=high]
+border-color=$red
+EOF
+}

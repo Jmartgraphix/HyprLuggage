@@ -1,0 +1,38 @@
+/* Hyprluggage - Dynamic (matugen) */
+.theme-dark, .theme-light {
+  --background-primary: #121318;
+  --background-primary-alt: #1e1f25;
+  --background-secondary: #282a2f;
+  --background-secondary-alt: #1e1f25;
+  --background-modifier-hover: #33353a;
+  --background-modifier-border: #44464f;
+
+  --text-normal: #e2e2e9;
+  --text-muted: #c5c6d0;
+  --text-faint: #8f9099;
+  --text-on-accent: #132f60;
+
+  --interactive-accent: #afc6ff;
+  --interactive-accent-hover: #2d4678;
+  --text-accent: #afc6ff;
+  --text-accent-hover: #2d4678;
+
+  --link-color: #afc6ff;
+  --link-color-hover: #dfbbde;
+  --link-external-color: #bfc6dc;
+
+  --code-background: #1e1f25;
+  --code-normal: #e2e2e9;
+
+  --text-error: #ffb4ab;
+  --text-success: #dfbbde;
+  --text-warning: #bfc6dc;
+
+  --divider-color: #44464f;
+  --icon-color: #c5c6d0;
+  --icon-color-hover: #e2e2e9;
+  --tag-color: #afc6ff;
+  --tag-background: #282a2f;
+}
+
+::selection { background: #afc6ff40; }

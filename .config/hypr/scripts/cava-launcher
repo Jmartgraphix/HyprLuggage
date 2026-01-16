@@ -1,0 +1,96 @@
+#!/bin/bash
+# Auto-launch cava when music starts playing
+
+CAVA_PID_FILE="/tmp/cava.pid"
+PLAYERCTL_STATUS=""
+
+# Check if cava is already running
+is_cava_running() {
+    if [[ -f "$CAVA_PID_FILE" ]]; then
+        local pid=$(cat "$CAVA_PID_FILE")
+        if kill -0 "$pid" 2>/dev/null; then
+            return 0
+        else
+            rm -f "$CAVA_PID_FILE"
+        fi
+    fi
+    pgrep -x cava >/dev/null && return 0
+    return 1
+}
+
+# Launch cava in a terminal window
+launch_cava() {
+    if is_cava_running; then
+        return 0
+    fi
+    
+    # Launch cava in a kitty window
+    kitty --class=cava --title=cava -e cava &
+    local pid=$!
+    echo $pid > "$CAVA_PID_FILE"
+}
+
+# Close cava
+close_cava() {
+    if [[ -f "$CAVA_PID_FILE" ]]; then
+        local pid=$(cat "$CAVA_PID_FILE")
+        kill "$pid" 2>/dev/null
+        rm -f "$CAVA_PID_FILE"
+    fi
+    pkill -x cava 2>/dev/null
+}
+
+# Check if music is playing
+is_music_playing() {
+    # Check playerctl (works with mpv, MPD via playerctl, etc.)
+    if playerctl status 2>/dev/null | grep -q "Playing"; then
+        return 0
+    fi
+    
+    # Check MPD directly
+    if mpc status 2>/dev/null | grep -q "playing"; then
+        return 0
+    fi
+    
+    return 1
+}
+
+# Main monitoring loop
+monitor() {
+    while true; do
+        if is_music_playing; then
+            if ! is_cava_running; then
+                launch_cava
+            fi
+        else
+            if is_cava_running; then
+                close_cava
+            fi
+        fi
+        sleep 2
+    done
+}
+
+# Handle different modes
+case "${1:-monitor}" in
+    monitor)
+        monitor
+        ;;
+    start)
+        launch_cava
+        ;;
+    stop)
+        close_cava
+        ;;
+    toggle)
+        if is_cava_running; then
+            close_cava
+        else
+            launch_cava
+        fi
+        ;;
+    *)
+        echo "Usage: $0 {monitor|start|stop|toggle}"
+        exit 1
+        ;;
+esac

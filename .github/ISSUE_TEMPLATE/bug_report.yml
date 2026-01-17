@@ -23,7 +23,7 @@ body:
       label: Steps to reproduce
       description: What did you do? (1-2-3)
       placeholder: |
-        1. symphony switch zen
+        1. hyprluggage switch zen
         2. Waybar restarted
         3. Colors stayed the same
     validations:
